@@ -1,7 +1,7 @@
 1. Generate ssh key with $ ssh-keygen -t ed25519 -C "your_email@example.com"
 1. Add the key to the ssh-agent $ ssh-add ~/.ssh/id_ed25519
 1. Add the .pub key to the gitHub
-1. Run $ git config --global user.mail "your_email@example.com"
+1. Run $ git config --global user.email "your_email@example.com"
 1. Run $ git config --global user.name "your_name"
 1. Run $ git init
 1. Do what you want
