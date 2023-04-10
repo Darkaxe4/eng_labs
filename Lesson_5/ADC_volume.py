@@ -4,7 +4,6 @@ import time
 DAC_PORTS = [10, 9, 11, 5, 6, 13, 19, 26]
 DAC_PORTS.reverse()
 LED_PORTS = [24, 25, 8, 7, 12, 16, 20, 21]
-LED_PORTS.reverse()
 COMP_PORT = 4
 TROYKA_PORT = 17
 
@@ -29,13 +28,20 @@ def get_ADC(bit_depth:int, comp_port:int, dac_ports:list):
             output += 2 ** i
     return output
         
+def get_volume(val: int, half_val_correction = 120, max_val_correction = 251):
+    _bit_depth = len(LED_PORTS)
+    output = [False for _ in range(_bit_depth)]
+    for i in range(_bit_depth):
+        if val > (max_val_correction // _bit_depth) * i:
+            output[i] = True
+    return output    
 
 
 try:
     while True:
         val = get_ADC(len(DAC_PORTS), COMP_PORT, DAC_PORTS)
         VOLTAGE = REF_VOLTAGE * (val / (2 ** len(DAC_PORTS)))
-        GPIO.output(LED_PORTS, binarize_out(val))
+        GPIO.output(LED_PORTS, get_volume(val))
 
 finally:
     GPIO.output(DAC_PORTS, 0)
